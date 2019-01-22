@@ -1,11 +1,9 @@
-=====
-Django-Publishable
-=====
+# Django-Publishable
 
 Django library that add to your models the draft/publish features.
 
-Quick start
------------
+## Quick start
+
 
 1. Add "publishable" to your INSTALLED_APPS setting like this::
     ```python
