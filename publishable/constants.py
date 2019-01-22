@@ -1,0 +1,10 @@
+class TYPES:
+    DRAFT = 'DRAFT'
+    PUBLISHED = 'PUBLISHED'
+
+
+class PublishingStatus:
+    DRAFT = 'DRAFT'
+    PUBLISHED = 'PUBLISHED'
+    PUBLISHING = 'PUBLISHING'
+    ERROR = 'ERROR'

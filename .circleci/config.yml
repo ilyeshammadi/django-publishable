@@ -1,0 +1,33 @@
+version: 2.1
+jobs:
+
+    build_and_push_to_pypi:
+        docker:
+            - image: circleci/python:3.6.4
+        steps:
+            - checkout
+
+            - run:
+                name: Install the dependencies
+                command: pip install -r requirements/prod.txt
+
+            - run:
+                name: Build the package
+                command: python setup.py sdist
+            
+            - run:
+                name: Push to PyPi
+                command: python -m twine upload -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} dist/*
+
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+        # Run this job only for release
+        - build_and_push_to_pypi:
+            filters:
+                branches:
+                    ignore: /.*/
+                tags:
+                    only: /^[0-9]+.[0-9]+.[0-9]+$/
