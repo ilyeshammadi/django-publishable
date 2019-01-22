@@ -1,6 +1,6 @@
 # Django Publishable 🦄
 
-[![PyPI version](https://badge.fury.io/py/django-publishable.svg)](https://badge.fury.io/py/django-publishable) [![CircleCI](https://circleci.com/gh/Ilyes-Hammadi/django-publishable.svg?style=svg)](https://circleci.com/gh/Ilyes-Hammadi/django-publishable)
+![](https://img.shields.io/pypi/v/django-publishable.svg) ![](https://img.shields.io/pypi/pyversions/django-publishable.svg)  ![](https://img.shields.io/github/license/Ilyes-Hammadi/django-publishable.svg) ![](https://img.shields.io/circleci/project/github/Ilyes-Hammadi/django-publishable/develop.svg)
 
 ## What is Django-Publishable?
 
