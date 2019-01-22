@@ -1,6 +1,15 @@
-# Django-Publishable
+# Django Publishable 🦄
+
+[![PyPI version](https://badge.fury.io/py/django-publishable.svg)](https://badge.fury.io/py/django-publishable) [![CircleCI](https://circleci.com/gh/Ilyes-Hammadi/django-publishable.svg?style=svg)](https://circleci.com/gh/Ilyes-Hammadi/django-publishable)
+
+## What is Django-Publishable?
 
 Django library that add to your models the draft/publish features.
+
+## Instalation
+```shell
+$ pip install django-publishable
+```
 
 ## Quick start
 

@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-publishable',
-    version=os.environ['TAG'],
+    version='0.1.9',
     packages=find_packages(),
     include_package_data=True,
     license='Apache Software License',
