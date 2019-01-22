@@ -5,7 +5,7 @@ from .constants import TYPES
 
 def clone_model(original_model):
     """
-    Create a compay of a Django mode
+    Create a copy of a Django mode
     :param original_model: models.Model
     :return: models.Model
     """
