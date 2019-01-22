@@ -9,15 +9,15 @@ jobs:
 
             - run:
                 name: Install the dependencies
-                command: pip install -r requirements/prod.txt
+                command: python3 -m pip install --user --upgrade setuptools wheel twine
 
             - run:
                 name: Build the package
-                command: python setup.py sdist
+                command: python3 setup.py sdist bdist_wheel
             
             - run:
                 name: Push to PyPi
-                command: python -m twine upload -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} dist/*
+                command: python3 -m twine upload -u ${PYPI_USERNAME} -p ${PYPI_PASSWORD} --repository-url https://upload.pypi.org/legacy/ dist/*
 
 
 workflows:
@@ -26,8 +26,12 @@ workflows:
     jobs:
         # Run this job only for release
         - build_and_push_to_pypi:
-            filters:
-                branches:
-                    ignore: /.*/
-                tags:
-                    only: /^[0-9]+.[0-9]+.[0-9]+$/
+#            filters:
+#                branches:
+#                    ignore: /.*/
+#                tags:
+#                    only: /^[0-9]+.[0-9]+.[0-9]+$/
+              filters:
+                  branches:
+                    only: 
+                        - develop
