@@ -8,6 +8,12 @@ jobs:
             - checkout
 
             - run:
+                name: Setup the TAG env var
+                command: |
+                  echo 'export TAG=${CIRCLE_TAG}' >> $BASH_ENV
+                  source $BASH_ENV
+
+            - run:
                 name: Install the dependencies
                 command: python3 -m pip install --user --upgrade setuptools wheel twine
 
