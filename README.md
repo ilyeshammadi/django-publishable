@@ -78,3 +78,19 @@ Django library that add to your models the draft/publish features.
     PUBLISHED
     
     ```
+
+## Using the Context Manager
+In order to keep your code clean and avoid replication of code by doing `article.published` all the time, you can use the `PublishedContextManager`. Every operation that you do inside the `with` will target the published version of the model. But be carful do not do any changes to the `published`, you're only supposed to read data, inserting the data should target the `draft`.
+
+```python
+>>> from publishable.context_managers import PublishedContextManager
+>>> a = Article.objects.create(title="foo")
+>>> a.publish()
+>>> a.title = "boo"
+>>> a.save()
+>>> with PublishedContextManager():
+        print(a.title)
+foo
+>>> print(a.title)
+boo
+```
