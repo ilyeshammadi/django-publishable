@@ -88,7 +88,8 @@ class Publishable(models.Model):
         abstract = True
 
     type = models.CharField(max_length=255, choices=TYPES_CHOICES, default=TYPES.DRAFT)
-    published = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
+    published = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
+                                  related_name="published_instance")
 
     objects = PublishableManager()
 
