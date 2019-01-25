@@ -23,17 +23,18 @@ def clone_model(original_model):
     all_model_fields = original_model._meta.get_fields()
     for field in all_model_fields:
         if isinstance(field, models.ManyToManyField):
-            # Get the name of the M2M field
-            field_attrname = field.attname
+            # Select the through model
+            through = field.remote_field.through
 
-            # Get a reference to the M2M
-            field_content = getattr(original_model, field_attrname)
+            filter_params = {
+                original_model._meta.model_name: original_model,
+            }
+            all_link_models = through.objects.filter(**filter_params)
 
-            # Select the field in the destination model
-            destination_field_content = getattr(destination_model, field_attrname)
-
-            # Copy all the items in the M2M to the destination model
-            destination_field_content.add(*field_content.all())
+            for link_model in all_link_models:
+                link_model.pk = None
+                setattr(link_model, original_model._meta.model_name, destination_model)
+                link_model.save()
 
     destination_model.save(broadcast_draft=False)
     return destination_model
