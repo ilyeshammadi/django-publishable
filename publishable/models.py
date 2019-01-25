@@ -91,22 +91,37 @@ class Publishable(models.Model):
     published = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL,
                                   related_name="published_instance")
 
+    is_deleted = models.BooleanField(default=False)
+
     objects = PublishableManager()
 
     def publish(self):
-        # Create a copy of the wanted to publish instance
-        published = clone_model(self)
+        if not self.is_deleted:
+            # Create a copy of the wanted to publish instance
+            published = clone_model(self)
 
-        # Delete the previous published to save space
-        previous_published_id = None
-        if self.published:
-            previous_published_id = self.published.id
+            # Delete the previous published to save space
+            previous_published_id = None
+            if self.published:
+                previous_published_id = self.published.id
 
-        self.published = published
-        self.save(broadcast_draft=False)
+            self.published = published
+            self.save(broadcast_draft=False)
 
-        if previous_published_id:
-            self.__class__.objects._all().get(pk=previous_published_id).delete()
+            if previous_published_id:
+                self.__class__.objects._all().get(pk=previous_published_id).delete(fake=False)
+        else:
+            if self.published:
+                self.published.delete(fake=False)
+            self.delete(fake=False)
+
+    def delete(self, using=None, keep_parents=False, fake=True):
+        if self.type == TYPES.DRAFT:
+            if not fake:
+                return super(Publishable, self).delete(using, keep_parents)
+            else:
+                self.is_deleted = True
+                self.save()
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None, broadcast_draft=True):
         super(Publishable, self).save(force_insert, force_update, using, update_fields)
