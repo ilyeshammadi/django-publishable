@@ -26,15 +26,28 @@ def clone_model(original_model):
             # Select the through model
             through = field.remote_field.through
 
+            # Get the name of the field
+            for f in through._meta.get_fields():
+                if isinstance(f, models.ForeignKey):
+                    m = f.rel.to
+                    if isinstance(original_model, m):
+                        parent_model_field_name = f.attname
+
+            formated_parent_model_field_name = '_'.join(parent_model_field_name.split('_')[:2])
+
             filter_params = {
-                original_model._meta.model_name: original_model,
+                parent_model_field_name: original_model.pk,
             }
             all_link_models = through.objects.filter(**filter_params)
 
             for link_model in all_link_models:
                 link_model.pk = None
-                setattr(link_model, original_model._meta.model_name, destination_model)
-                link_model.save()
+                setattr(link_model, formated_parent_model_field_name, destination_model)
+                try:
+                    link_model.save(broadcast_draft=False)
+                except:
+                    link_model.save()
+
 
     destination_model.save(broadcast_draft=False)
     return destination_model
