@@ -7,7 +7,8 @@ class DraftController:
     def select(self):
         if not self.is_draft:
             return self.instance.published
-        return self.instance
+        if not self.instance.is_deleted:
+            return self.instance
 
 
 class PublishedContextManager:
