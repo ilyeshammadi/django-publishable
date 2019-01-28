@@ -15,7 +15,7 @@ class Draft(models.Model):
     Model that will contain a draft model
     """
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
-    object_id = models.PositiveIntegerField(null=True)
+    object_id = models.CharField(max_length=255, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def publish(self):
