@@ -100,11 +100,7 @@ class Publishable(models.Model):
             # Create a copy of the wanted to publish instance
             published = clone_model(self)
 
-            # Delete the previous published to save space
-            previous_published_id = None
-            if self.published:
-                previous_published_id = self.published.id
-
+            previous_published_id = self.published.id if self.published else None
             self.published = published
             self.save(broadcast_draft=False)
 
@@ -119,9 +115,8 @@ class Publishable(models.Model):
         if self.type == TYPES.DRAFT:
             if not fake:
                 return super(Publishable, self).delete(using, keep_parents)
-            else:
-                self.is_deleted = True
-                self.save()
+            self.is_deleted = True
+            self.save()
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None, broadcast_draft=True):
         super(Publishable, self).save(force_insert, force_update, using, update_fields)
@@ -135,8 +130,8 @@ class Publishable(models.Model):
         specific publisher
         :return: Draft
         """
-        if Draft.objects.filter(object_id=self.id).exists():
-            draft = Draft.objects.get(object_id=self.id)
-        else:
-            draft = Draft.objects.create(content_object=self)
-        return draft
+        return (
+            Draft.objects.get(object_id=self.id)
+            if Draft.objects.filter(object_id=self.id).exists()
+            else Draft.objects.create(content_object=self)
+        )

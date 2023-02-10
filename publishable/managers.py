@@ -10,9 +10,11 @@ def select(instance):
 
 
 def select_from_queryset(queryset):
-    if not DraftController.is_draft:
-        return queryset.filter(type=TYPES.PUBLISHED)
-    return queryset.filter(type=TYPES.DRAFT, is_deleted=False)
+    return (
+        queryset.filter(type=TYPES.DRAFT, is_deleted=False)
+        if DraftController.is_draft
+        else queryset.filter(type=TYPES.PUBLISHED)
+    )
 
 
 class PublishableManager(models.Manager):
